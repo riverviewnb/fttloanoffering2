@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projected ROI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      padding: 40px;
+      color: #333;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    em {
+      color: #666;
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    input[type="number"] {
+      margin-left: 10px;
+      width: 120px;
+    }
+    button {
+      background-color: #8f8;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #results {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .disclaimer {
+      margin-top: 30px;
+      padding: 20px;
+      font-style: italic;
+      font-size: 14px;
+      background: #f4f4f4;
+      border-radius: 6px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Projected ROI Calculator</h1>
+  <em>Estimates based on user inputs - all returns assumed to occur at exit</em>
+
+  <div>
+    <label>Loan Amount (US$): <input id="loanInput" type="number" value="250000" /></label>
+    <label>Interest Rate (%): <input id="rateInput" type="number" value="15" /></label>
+    <label>Years Until Exit: <input id="yearsInput" type="number" value="3" /></label>
+    <label>APR G CAN Unit Sales: <input id="unitsInput" type="number" value="30000" /></label>
+    <br />
+    <button id="calculateBtn" onclick="calculateROI()">Calculate</button>
+    <p id="countdownDisplay"></p>
+  </div>
+
+  <div id="results">
+    <h2>Results</h2>
+    <p id="epaPercentage">EPA Percentage (%):</p>
+    <p id="exitValue">APR Exit Value (US$):</p>
+    <p id="accruedInterest">Accrued Interest:</p>
+    <p id="loanDisplay">Loan Amount:</p>
+    <p id="totalReturn">Total Return (US$):</p>
+    <p id="roiMultiple">ROI Multiple:</p>
+    <p id="avgAnnualReturn">Average Annual Return (%):</p>
+    <button onclick="downloadSummary()">Download Summary of Results</button>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Fuel Transfer Technologies Inc. (FTT) Disclaimer</strong><br />
+    This update may contain statements that look forward in time and reflect FTT’s current expectations regarding future events. These forward-looking statements involve risks and uncertainties and are qualified in their entirety by the inherent risks and uncertainties surrounding future expectations. We intend the forward-looking statements to speak only as of the time made and do not undertake to update or revise them as more information becomes available.
+    <br /><br />
+    <strong>ROI Calculations Based on:</strong><br /><br />
+    <strong>EPA % Consideration:</strong> Based on the loan amount (up to a maximum of $500,000), Lender receives X% of APR’s total economic value in equity via an Equity Participation Agreement from FTT. For example, $500,000 equals 5% EPA of APR, $250,000 equals 2.5% EPA of APR, $125,000 equals 1.25% EPA of APR.<br /><br />
+    <strong>APR Exit Value:</strong> Annual APR sales revenues based on (APR G CAN® Unit Sales x $329) multiplied by a factor of 3.<br /><br />
+    <strong>Accruing Interest based on:</strong> Simple Interest per annum x number of selected years.<br /><br />
+    <strong>Total Return Calculation:</strong> ((EPA Percentage based on Loan Amount) x APR Exit Value)) + (Accrued Simple Interest at 15% per annum multiplied by number of Years) + Loan Amount.<br /><br />
+    <strong>ROI figure:</strong> The ROI figure represents the total projected capital returned divided by the original loan, inclusive of the principal amount.<br /><br />
+    <strong>Average Annual Return (%):</strong> is for illustrative only. All returns paid in a single lump sum upon company exit.
+  </div>
+
+  <script>
+    let countdown;
+    function formatCurrency(value) {
+      return '$' + Number(value).toLocaleString();
+    }
+
+    function calculateROI() {
+      const loan = parseFloat(document.getElementById("loanInput").value);
+      const rate = parseFloat(document.getElementById("rateInput").value);
+      const years = parseInt(document.getElementById("yearsInput").value);
+      const units = parseInt(document.getElementById("unitsInput").value);
+
+      const epaPercent = (loan / 10000000) * 100;
+      const epa = epaPercent > 5 ? 5 : epaPercent;
+      const exitValue = units * 329 * 3;
+      const accruedInterest = loan * (rate / 100) * years;
+      const totalReturn = (epa / 100) * exitValue + accruedInterest + loan;
+      const roiMultiple = totalReturn / loan;
+      const avgAnnual = ((roiMultiple - 1) * 100) / years;
+
+      document.getElementById("epaPercentage").textContent = `EPA Percentage: ${epa.toFixed(2)}%`;
+      document.getElementById("exitValue").textContent = `APR Exit Value: ${formatCurrency(exitValue)}`;
+      document.getElementById("accruedInterest").textContent = `Accrued Interest: ${formatCurrency(accruedInterest)}`;
+      document.getElementById("loanDisplay").textContent = `Loan Amount: ${formatCurrency(loan)}`;
+      document.getElementById("totalReturn").textContent = `Total Return: ${formatCurrency(totalReturn)}`;
+      document.getElementById("roiMultiple").textContent = `ROI Multiple: ${roiMultiple.toFixed(2)}x`;
+      document.getElementById("avgAnnualReturn").textContent = `Average Annual Return: ${avgAnnual.toFixed(2)}%`;
+
+      startCountdown();
+    }
+
+    function startCountdown() {
+      clearInterval(countdown);
+      let seconds = 120;
+      const display = document.getElementById("countdownDisplay");
+      display.textContent = `Results will reset in ${seconds} seconds...`;
+      countdown = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+          clearInterval(countdown);
+          resetResults();
+          display.textContent = '';
+        } else {
+          display.textContent = `Results will reset in ${seconds} seconds...`;
+        }
+      }, 1000);
+    }
+
+    function resetResults() {
+      const fields = [
+        "epaPercentage", "exitValue", "accruedInterest",
+        "loanDisplay", "totalReturn", "roiMultiple", "avgAnnualReturn"
+      ];
+      fields.forEach(id => document.getElementById(id).textContent = document.getElementById(id).textContent.split(':')[0] + ':');
+    }
+
+    function downloadSummary() {
+      const content = `PROJECTED ROI CALCULATOR RESULTS
+
+` +
+        `${document.getElementById("epaPercentage").textContent}
+` +
+        `${document.getElementById("exitValue").textContent}
+` +
+        `${document.getElementById("accruedInterest").textContent}
+` +
+        `${document.getElementById("loanDisplay").textContent}
+` +
+        `${document.getElementById("totalReturn").textContent}
+` +
+        `${document.getElementById("roiMultiple").textContent}
+` +
+        `${document.getElementById("avgAnnualReturn").textContent}`;
+
+      const blob = new Blob([content], { type: 'text/plain' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "ROI_Summary.txt";
+      link.click();
+    }
+  </script>
+</body>
+</html>
