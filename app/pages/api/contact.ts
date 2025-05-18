@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { transporter } from '@/app/lib/email'; // Adjust path if necessary
+import { transporter } from '@/app/lib/email'; // ✅ Uses the server-side utility
 
 export const config = {
   runtime: 'nodejs',
