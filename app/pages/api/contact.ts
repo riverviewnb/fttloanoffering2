@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { transporter } from '../../../lib/email'; // <-- correct relative path
+import { transporter } from '../../../lib/email'; // Make sure this path is correct
 
 export const config = {
   runtime: 'nodejs',
