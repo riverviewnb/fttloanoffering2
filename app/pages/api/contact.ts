@@ -13,13 +13,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { name, email, phone, company, message } = req.body;
 
-  // Create a transporter using SMTP
+  // Setup transporter
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
+      user: process.env.EMAIL_USER, // e.g., james.wedderburn@gcan.com
+      pass: process.env.EMAIL_PASS  // App password or SMTP password
+    }
   });
 
   try {
@@ -33,13 +33,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Company:</strong> ${company}</p>
-        <p><strong>Message:</strong> ${message}</p>
-      `,
+        <p><strong>Message:</strong><br/>${message}</p>
+      `
     });
 
-    res.status(200).json({ message: 'Email sent successfully' });
-  } catch (error: any) {
-    console.error('Error sending email:', error);
-    res.status(500).json({ message: 'Email sending failed', error: error.message });
+    return res.status(200).json({ message: 'Email sent successfully' });
+  } catch (err: any) {
+    console.error('Error sending email:', err);
+    return res.status(500).json({ message: 'Email sending failed', error: err.message });
   }
 }
