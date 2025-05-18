@@ -1,6 +1,8 @@
+export const config = {
+  runtime: 'nodejs',
+};
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { transporter } from '../../../lib/email'; // Make sure this path is correct
-
+import { transporter } from '@/lib/email';
 export const config = {
   runtime: 'nodejs',
 };
