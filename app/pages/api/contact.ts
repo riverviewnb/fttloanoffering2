@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { transporter } from '@/lib/email'; // <- adjust path if needed
 
-const nodemailer = require('nodemailer');
-// Ensure this API route runs in the Node.js runtime (not Edge)
 export const config = {
   runtime: 'nodejs',
 };
@@ -12,15 +11,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const { name, email, phone, company, message } = req.body;
-
-  // Setup transporter
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER, // e.g., james.wedderburn@gcan.com
-      pass: process.env.EMAIL_PASS  // App password or SMTP password
-    }
-  });
 
   try {
     await transporter.sendMail({
@@ -34,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Company:</strong> ${company}</p>
         <p><strong>Message:</strong><br/>${message}</p>
-      `
+      `,
     });
 
     return res.status(200).json({ message: 'Email sent successfully' });
