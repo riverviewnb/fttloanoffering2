@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { transporter } from '@/app/lib/email'; // ✅ Uses the server-side utility
+import { transporter } from '@/lib/email'; // Adjust this path if necessary
 
+// Ensures this API route runs on the Node.js server runtime (not Edge)
 export const config = {
   runtime: 'nodejs',
 };
