@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { transporter } from '../../lib/email'; // ✅ Corrected relative path
+import { transporter } from '../../lib/email'; // ✅ Adjusted relative path
 
 export const config = {
-  runtime: 'nodejs', // Ensure this runs in Node.js runtime (not Edge)
+  runtime: 'nodejs',
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -30,9 +30,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({ message: 'Email sent successfully' });
   } catch (err: any) {
     console.error('Error sending email:', err);
-    return res.status(500).json({
-      message: 'Email sending failed',
-      error: err.message,
-    });
+    return res.status(500).json({ message: 'Email sending failed', error: err.message });
   }
 }
