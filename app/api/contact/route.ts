@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-export const runtime = 'nodejs'; // Ensures it's using Node.js, not Edge
+export const runtime = 'nodejs'; // Needed for nodemailer to work
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,8 +11,8 @@ export async function POST(req: NextRequest) {
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+        pass: process.env.EMAIL_PASS,
+      },
     });
 
     await transporter.sendMail({
@@ -26,11 +26,10 @@ export async function POST(req: NextRequest) {
         <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Company:</strong> ${company}</p>
         <p><strong>Message:</strong><br/>${message}</p>
-      `
+      `,
     });
 
     return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
-
   } catch (error: any) {
     console.error('Error sending email:', error);
     return NextResponse.json({ message: 'Email sending failed', error: error.message }, { status: 500 });
