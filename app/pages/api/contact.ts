@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import nodemailer from 'nodemailer';
 
+const nodemailer = require('nodemailer');
 // Ensure this API route runs in the Node.js runtime (not Edge)
 export const config = {
   runtime: 'nodejs',
