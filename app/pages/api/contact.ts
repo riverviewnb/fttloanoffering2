@@ -2,7 +2,8 @@ export const config = {
   runtime: 'nodejs',
 };
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { transporter } from '@/lib/email';
+import { transporter } from '../../../lib/email';
+
 export const config = {
   runtime: 'nodejs',
 };
