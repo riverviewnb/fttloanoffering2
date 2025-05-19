@@ -1,23 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
-export const runtime = 'nodejs';
+export const runtime = 'nodejs'; // use "nodejs" for Vercel support
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
-  const nodemailer = (await import('nodemailer')).default;
-
   try {
     const { name, email, phone, company, message } = await req.json();
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: email,
+    const data = await resend.emails.send({
+      from: 'Contact Form <onboarding@resend.dev>',
       to: 'jamesw@fttproducts.com',
       subject: `New Expression of Interest from ${name}`,
       html: `
@@ -30,9 +23,8 @@ export async function POST(req: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
+    return NextResponse.json({ success: true, data });
   } catch (error: any) {
-    console.error('Error sending email:', error);
-    return NextResponse.json({ message: 'Email sending failed', error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
