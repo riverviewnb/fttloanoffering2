@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
-export const runtime = 'nodejs'; // Ensures it's using Node.js, not Edge
+export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
+  const nodemailer = (await import('nodemailer')).default;
+
   try {
     const { name, email, phone, company, message } = await req.json();
 
