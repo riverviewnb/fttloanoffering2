@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-// Optional: explicitly specify Node.js runtime
-export const runtime = 'nodejs';
+export const runtime = 'nodejs'; // Ensures it's using Node.js, not Edge
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,7 +17,7 @@ export async function POST(req: NextRequest) {
 
     await transporter.sendMail({
       from: email,
-      to: 'james.wedderburn@gcan.com',
+      to: 'jamesw@fttproducts.com',
       subject: `New Expression of Interest from ${name}`,
       html: `
         <h3>New Contact Submission</h3>
@@ -33,9 +32,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
   } catch (error: any) {
     console.error('Error sending email:', error);
-    return NextResponse.json(
-      { message: 'Email sending failed', error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: 'Email sending failed', error: error.message }, { status: 500 });
   }
 }
