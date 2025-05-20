@@ -1,6 +1,6 @@
 {
   "functions": {
-    "app/api/contact/inquiry/route.ts": {
+    "pages/api/contact.ts": {
       "runtime": "nodejs18.x"
     }
   }
