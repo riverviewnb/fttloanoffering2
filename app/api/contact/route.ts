@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'nodejs'; // Ensures Node.js runtime on Vercel
+export const runtime = 'nodejs'; // Force Node.js runtime on Vercel
 
 export async function POST(req: NextRequest) {
   const nodemailer = (await import('nodemailer')).default;
@@ -31,9 +31,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
-
   } catch (error: any) {
     console.error('Error sending email:', error);
-    return NextResponse.json({ message: 'Email sending failed', error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Email sending failed', error: error.message },
+      { status: 500 }
+    );
   }
 }
