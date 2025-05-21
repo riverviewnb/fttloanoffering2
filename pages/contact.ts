@@ -1,13 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import nodemailer from 'nodemailer';
 
-export const runtime = 'nodejs'; // Ensure Node.js environment (not Edge)
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
-export async function POST(req: NextRequest) {
-  const nodemailer = (await import('nodemailer')).default;
+  const { name, email, phone, company, message } = req.body;
 
   try {
-    const { name, email, phone, company, message } = await req.json();
-
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -30,9 +31,9 @@ export async function POST(req: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
+    return res.status(200).json({ message: 'Email sent successfully' });
   } catch (error: any) {
     console.error('Error sending email:', error);
-    return NextResponse.json({ message: 'Email sending failed', error: error.message }, { status: 500 });
+    return res.status(500).json({ message: 'Email sending failed', error: error.message });
   }
 }
