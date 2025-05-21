@@ -1,38 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'nodejs'; // Force Node.js environment
+// Ensure this route uses the Node.js runtime, not Edge
+export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
-  const nodemailer = (await import('nodemailer')).default;
+  const nodemailer = await import('nodemailer').then(mod => mod.default);
 
-  try {
-    const { name, email, phone, company, message } = await req.json();
+  const { name, email, phone, company, message } = await req.json();
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
-    await transporter.sendMail({
-      from: email,
-      to: 'jamesw@fttproducts.com',
-      subject: `New Expression of Interest from ${name}`,
-      html: `
-        <h3>New Contact Submission</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Company:</strong> ${company}</p>
-        <p><strong>Message:</strong><br/>${message}</p>
-      `,
-    });
+  await transporter.sendMail({
+    from: email,
+    to: 'jamesw@fttproducts.com',
+    subject: `New Expression of Interest from ${name}`,
+    html: `
+      <h3>New Contact Submission</h3>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Company:</strong> ${company}</p>
+      <p><strong>Message:</strong><br/>${message}</p>
+    `,
+  });
 
-    return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
-  } catch (error: any) {
-    console.error('Error sending email:', error);
-    return NextResponse.json({ message: 'Email sending failed', error: error.message }, { status: 500 });
-  }
+  return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
 }
