@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import nodemailer from 'nodemailer';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -9,6 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { name, email, phone, company, message } = req.body;
 
   try {
+    const nodemailer = await import('nodemailer');
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
