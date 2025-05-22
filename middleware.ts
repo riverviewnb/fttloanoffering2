@@ -4,8 +4,8 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const isLoggedIn = request.cookies.get('authorized')?.value;
 
-  if (request.nextUrl.pathname === '/login' && isLoggedIn) {
-    return NextResponse.redirect(new URL('/overview', request.url));
+  if (request.nextUrl.pathname !== '/login' && !isLoggedIn) {
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
@@ -14,10 +14,10 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all routes except:
+     * Protect all routes except:
      * - static files
-     * - api routes
-     * - the login page itself
+     * - API routes
+     * - login page itself
      */
     '/((?!api|_next/static|_next/image|favicon.ico|login).*)',
   ],

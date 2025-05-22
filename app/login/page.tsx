@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -12,18 +11,14 @@ export default function LoginPage() {
     '41602', '38194', '75028', '62901', '51037',
     '20813', '97640', '34729', '59302', '80467',
     '14496', '90238', '33874', '26091', '79105',
-    '62539', '43718', '84096', '71520', '31084'
+    '62539', '43718', '84096', '71520', '31084',
   ];
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (validPasswords.includes(password)) {
-      // Set authorization cookie
       document.cookie = "authorized=true; path=/";
-
-      // Redirect to Overview page
-      router.push('/overview');
+      router.push('/');
     } else {
       alert('Incorrect password');
     }
@@ -37,7 +32,7 @@ export default function LoginPage() {
           type="password"
           placeholder="Enter 5-digit password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           className="px-4 py-2 border rounded"
         />
         <button
@@ -50,3 +45,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
