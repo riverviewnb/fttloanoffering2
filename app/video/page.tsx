@@ -7,7 +7,15 @@ export default function VideoPage() {
       <img
         src="/static/header-banner.png"
         alt="Header Banner"
-        style={{ width: '100%', maxWidth: '850px', display: 'block', margin: '0 auto' }}
+        style={{
+          width: '100%',
+          maxWidth: '850px',
+          border: '2px solid #ccc',
+          borderRadius: '16px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          margin: '0 auto',
+          display: 'block'
+        }}
       />
 
       <nav className="flex justify-center my-4">
@@ -22,13 +30,20 @@ export default function VideoPage() {
 
       <div className="flex justify-center">
         <video
-          width="850"
-          height="auto"
           controls
-          style={{ border: '1px solid #ccc', borderRadius: '12px' }}
+          preload="auto"
+          width="100%"
+          style={{
+            maxWidth: '850px',
+            border: '2px solid #ccc',
+            borderRadius: '16px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            margin: '0 auto',
+            display: 'block'
+          }}
         >
-          <source src="/product-video.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
+          <source src="/videos/product-video.mp4" type="video/mp4" />
+          Sorry, your browser doesn’t support embedded videos.
         </video>
       </div>
 
