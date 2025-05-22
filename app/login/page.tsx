@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -16,9 +17,13 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (validPasswords.includes(password)) {
+      // Set authorization cookie
       document.cookie = "authorized=true; path=/";
-      router.push('/');
+
+      // Redirect to Overview page
+      router.push('/overview');
     } else {
       alert('Incorrect password');
     }
@@ -45,4 +50,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
