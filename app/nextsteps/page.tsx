@@ -50,7 +50,7 @@ export default function Page() {
               download
               className="inline-block px-6 py-3 bg-green-600 text-white rounded shadow hover:bg-green-700 transition"
             >
-              Download Proposal
+              Click Here to Download FTT Loan Proposal
             </a>
           </div>
 
@@ -64,6 +64,16 @@ export default function Page() {
             <p>President & CEO</p>
             <p>Fuel Transfer Technologies Inc.</p>
             <p>Cell: 506-961-0000</p>
+            <div className="mt-6">
+  <a
+    href="/James-Wedderburn-Profile.pdf"
+    download
+    className="inline-block px-6 py-3 bg-blue-700 text-white rounded shadow hover:bg-blue-800 transition"
+  >
+    Click Here to Download James Profile
+  </a>
+</div>
+
           </div>
         </div>
       </section>

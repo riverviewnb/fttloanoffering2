@@ -1,103 +1,70 @@
-import Image from "next/image";
-
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export const metadata = {
+    title: 'Next Steps – FTT Loan Offering',
+    description: 'Follow-up and contact details for the FTT Loan Offering.',
+  };
+  
+  export default function Page() {
+    return (
+      <main className="min-h-screen bg-white text-gray-800">
+        {/* Header Banner */}
+        <div className="flex justify-center">
+          <img
+            src="/static/header-banner.png"
+            alt="FTT Loan Proposal Header"
+            className="h-[108px] w-auto"
+          />
         </div>
+  
+        {/* Navigation Bar */}
+        <nav className="flex justify-center flex-wrap gap-2 py-4">
+          <a href="/overview" className="border px-4 py-2 mx-1 hover:bg-gray-100">Overview</a>
+          <a href="/product" className="border px-4 py-2 mx-1 hover:bg-gray-100">The Product</a>
+          <a href="/video" className="border px-4 py-2 mx-1 hover:bg-gray-100">G CAN Promo Video</a>
+          <a href="/technology" className="border px-4 py-2 mx-1 hover:bg-gray-100">The Technology</a>
+          <a href="/market" className="border px-4 py-2 mx-1 hover:bg-gray-100">Market</a>
+          <a href="/return" className="border px-4 py-2 mx-1 hover:bg-gray-100">Return</a>
+          <a href="/next-steps" className="border px-4 py-2 mx-1 bg-gray-300 font-semibold">Next Steps</a>
+        </nav>
+  
+        {/* Page Content */}
+        <section className="p-6 flex items-center justify-center">
+          <div className="bg-gray-50 shadow-xl p-10 max-w-2xl w-full">
+            <h2 className="text-3xl font-bold mb-6">Next Steps</h2>
+  
+            <p className="mb-4 text-lg">
+              Thank you for reviewing the FTT Loan Offering with Performance-Based Return Opportunity.
+            </p>
+  
+            <p className="mb-6 text-lg">
+              If you have any questions or would like to learn more, please email me at{' '}
+              <a href="mailto:jamesw@fttproducts.com" className="text-blue-600 underline">
+                jamesw@fttproducts.com
+              </a>
+            </p>
+  
+            <div className="mb-6">
+              <a
+                href="/2025-05-02 FTT Loan Proposal.pdf"
+                download
+                className="inline-block px-6 py-3 bg-green-600 text-white shadow hover:bg-green-700 transition"
+              >
+                Download FTT Loan Proposal
+              </a>
+            </div>
+  
+            <p className="mb-6 text-lg">
+              We appreciate your interest and look forward to speaking with you soon.
+            </p>
+  
+            <div className="text-sm text-gray-700 mt-8 border-t pt-4">
+              <p><strong>Best regards,</strong></p>
+              <p className="mt-2">James W. Wedderburn</p>
+              <p>President & CEO</p>
+              <p>Fuel Transfer Technologies Inc.</p>
+              <p>Cell: 506-961-0000</p>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+    );
+  }
