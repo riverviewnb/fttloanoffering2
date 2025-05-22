@@ -7,8 +7,14 @@ export default function ProductPage() {
       <img
         src="/static/header-banner.png"
         alt="Header Banner"
-        style={{ width: '100%', maxWidth: '850px', display: 'block', margin: '0 auto' }}
+        style={{
+          width: '100%',
+          maxWidth: '850px',
+          display: 'block',
+          margin: '0 auto'
+        }}
       />
+
       <nav className="flex justify-center my-4">
         <Link href="/overview" className="border px-4 py-2 mx-1">Overview</Link>
         <Link href="/product" className="border px-4 py-2 mx-1 bg-gray-200">The Product</Link>
@@ -18,11 +24,16 @@ export default function ProductPage() {
         <Link href="/return" className="border px-4 py-2 mx-1">Return</Link>
         <Link href="/nextsteps" className="border px-4 py-2 mx-1">Next Steps</Link>
       </nav>
+
       <div className="flex justify-center">
         <img
           src="/static/ProductPageStatic.png"
           alt="Product Static Page"
-          style={{ width: '100%', maxWidth: '850px', border: '1px solid #ccc' }}
+          style={{
+            width: '100%',
+            maxWidth: '850px',
+            border: '1px solid #ccc'
+          }}
         />
       </div>
     </div>
