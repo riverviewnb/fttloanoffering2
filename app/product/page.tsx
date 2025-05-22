@@ -27,7 +27,7 @@ export default function ProductPage() {
 
       <div className="flex justify-center">
         <img
-          src="/static/ProductPageStatic.png"
+          src="/static/productpagestatic.png"
           alt="Product Static Page"
           style={{
             width: '100%',
