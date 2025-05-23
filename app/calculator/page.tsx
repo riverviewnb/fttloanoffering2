@@ -23,9 +23,9 @@ export default function CalculatorPage() {
       <div className="mb-6 text-center">
         <p className="text-lg font-semibold mb-2">Watch: How to Use This Calculator (20 sec)</p>
         <video width="640" height="360" controls>
-          <source src="/videos/instruction.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+  <source src="/videos/instruction-fixed.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
       </div>
 
       <iframe
