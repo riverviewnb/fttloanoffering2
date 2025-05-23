@@ -48,25 +48,28 @@ export default function VideoPage() {
       </div>
 
       {/* 🔴 Oval Red Download Button */}
-<div className="flex justify-center mt-8">
-  <a
-    href="/APR-Overview.pdf"
-    download
-    className="px-8 py-4 bg-red-600 text-white text-lg font-semibold rounded-full shadow hover:bg-red-700 transition text-center text-wrap max-w-[800px]"
-  >
-    Click Here to Download APR Industries Inc. Overview – Manufacturer of the G CAN®
-  </a>
-</div>
+      <div className="flex justify-center mt-8">
+        <a
+          href="/APR-Overview.pdf"
+          download
+          className="px-8 py-4 bg-red-600 text-white text-lg font-semibold rounded-full shadow hover:bg-red-700 transition text-center text-wrap max-w-[800px]"
+        >
+          Click Here to Download APR Industries Inc. Overview – Manufacturer of the G CAN®
+        </a>
+      </div>
 
-{/* 📷 New Image Below Download Button */}
-<div className="flex justify-center mt-6">
-  <img
-    src="/seadoo.png"
-    alt="Sea-Doo G CAN Usage"
-    style={{
-      maxWidth: '850px',
-      borderRadius: '12px',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    }}
-  />
-</div>
+      {/* 📷 New Image Below Download Button */}
+      <div className="flex justify-center mt-6">
+        <img
+          src="/seadoo.png"
+          alt="Sea-Doo G CAN Usage"
+          style={{
+            maxWidth: '850px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          }}
+        />
+      </div>
+    </div>
+  );
+}
