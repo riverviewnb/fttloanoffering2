@@ -58,7 +58,7 @@ export default function VideoPage() {
         </a>
       </div>
 
-      {/* 📷 New Image Below Download Button */}
+      {/* 📷 Sea-Doo Image Below */}
       <div className="flex justify-center mt-6">
         <img
           src="/seadoo.png"
