@@ -14,9 +14,19 @@ export default function LoginPage() {
     '62539', '43718', '84096', '71520', '31084',
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (validPasswords.includes(password)) {
+      // 🔔 Send silent background notification
+      fetch('/api/notify-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      }).catch((err) => {
+        console.error('Notification failed', err);
+      });
+
       document.cookie = "authorized=true; path=/";
       router.push('/');
     } else {
@@ -45,4 +55,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
