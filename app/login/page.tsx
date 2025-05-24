@@ -59,7 +59,7 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-sm">
         <input
           type="password"
-          placeholder="Enter 5-digit password"
+          placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="px-4 py-2 border rounded"
