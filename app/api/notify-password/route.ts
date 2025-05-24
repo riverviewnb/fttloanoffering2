@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
@@ -7,9 +6,8 @@ import os from 'os';
 import ExcelJS from 'exceljs';
 
 export async function POST(req: Request) {
-  // ✅ Correct usage of headers() — not async, no await
-  const headerList = headers(); 
-  const bypassToken = headerList.get('x-vercel-protection-bypass');
+  // ✅ Use req.headers directly
+  const bypassToken = req.headers.get('x-vercel-protection-bypass');
   const expectedToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
   if (!bypassToken || bypassToken !== expectedToken) {
