@@ -6,7 +6,7 @@ import os from 'os';
 import ExcelJS from 'exceljs';
 
 export async function POST(req: Request) {
-  // ✅ Use req.headers directly
+  // ✅ Use headers from the req object directly
   const bypassToken = req.headers.get('x-vercel-protection-bypass');
   const expectedToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
@@ -72,3 +72,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Email failed' }, { status: 500 });
   }
 }
+
