@@ -7,10 +7,12 @@ import os from 'os';
 import ExcelJS from 'exceljs';
 
 export async function POST(req: Request) {
-  const headerList = headers();
+  // ✅ Fix: Await the headers
+  const headerList = await headers();
   const bypassToken = headerList.get('x-vercel-protection-bypass');
   const expectedToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
+  // ✅ Block if the token doesn't match
   if (!bypassToken || bypassToken !== expectedToken) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -58,18 +60,4 @@ export async function POST(req: Request) {
       from: `"🔐 FTT App" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
       subject: `🔐 Password Entered on FTT App: ${maskedPassword}`,
-      text: `A user entered a password.\n\nMasked Password: ${maskedPassword}\nIP: ${ip}`,
-      attachments: [
-        {
-          filename: fileName,
-          path: filePath,
-        },
-      ],
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error('Error sending email:', err);
-    return NextResponse.json({ error: 'Email failed' }, { status: 500 });
-  }
-}
+      text: `A user entered a password.\n\nMasked Password: ${maskedP
